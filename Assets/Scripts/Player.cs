@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -7,12 +8,12 @@ public class Player : MonoBehaviour
     private float moveSpeed;
     private Vector3 mousePosition;
     public float jumpForce = 5f; // Jump force
+    private Shooting shooting;
     public Health health;
     public Oxygen oxygen;
     private Vector2 moveDirection;
     [SerializeField] GameObject gfx;
     private float gfxAngle;
-
 
 
     public Rigidbody2D rb;
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        shooting = GetComponent<Shooting>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         health = GetComponent<Health>();
@@ -54,6 +56,7 @@ public class Player : MonoBehaviour
         }
 
         moveDirection = new Vector2(horizontalInput, verticalInput) * moveSpeed;
+
 
         // Handle shooting
         // if (Input.GetMouseButtonDown(1)) // Left mouse button
@@ -80,6 +83,7 @@ public class Player : MonoBehaviour
         {
             gfx.transform.localScale = new Vector3(1f, 1f, 1f); // Reset X localScale
                                                                 // gfx.transform.rotation = Quaternion.Euler(0f, 0f, +1* transform.rotation.z);
+
             // if (moveDirection.magnitude > 0) // Check if there is movement
             // {
             //     gfxAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;

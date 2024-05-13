@@ -7,6 +7,7 @@ public class HarpoonScript : MonoBehaviour
     private Vector3 mousePos;
     private Rigidbody2D rb;
     public float force;
+    public float timeBeforeDestroy = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,6 @@ public class HarpoonScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        Destroy(this.gameObject, 0.4f);
+        Destroy(this.gameObject, timeBeforeDestroy);
     }
 }

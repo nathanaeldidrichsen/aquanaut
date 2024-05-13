@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 
@@ -8,11 +9,12 @@ public class Shooting : MonoBehaviour
 {
     private Vector3 mousePosition;
     LineRenderer line;
-    public float moveToGrabbedPosSpeed;
-    public float grappleShootSpeed = 20f;
+    public float moveToGrabbedPosSpeed = 10;
+    public float grappleShootSpeed = 100f;
     bool isGrappling = false;
     public bool retracting = false;
     Vector2 target;
+
 
     [SerializeField] LayerMask grappableMask;
     private float maxDistance = 10f;
@@ -25,6 +27,7 @@ public class Shooting : MonoBehaviour
     public GameObject harpoonPrefab; // Prefab of the harpoon GameObject
     public float harpoonSpeed = 10f; // Speed of the harpoon
     [SerializeField] GameObject harpoonShootPoint;
+    public SpriteRenderer hookSprite;
 
 
 
@@ -43,27 +46,42 @@ public class Shooting : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, rotZ);
 
 
-        if (Input.GetMouseButtonDown(0)) // Left mouse button
+        if (Input.GetMouseButton(0)) // Left mouse button
         {
+            harpoonShootPoint.GetComponent<SpriteRenderer>().enabled = true;
             // harpoonShootPoint.SetActive(true);
-            Shoot();
             //StartGrapple();
         }
+        if(Input.GetMouseButtonUp(0))
+        {
+            harpoonShootPoint.GetComponent<SpriteRenderer>().enabled = false;
+            Shoot();
 
-                if (Input.GetMouseButtonDown(1) && !isGrappling) // Left mouse button
+        }
+
+
+        if (Input.GetMouseButton(1) && !isGrappling) // Left mouse button
+        {
+            hookSprite.enabled = true;
+        }
+
+
+        if (Input.GetMouseButtonUp(1) && !isGrappling) // Left mouse button
         {
             // harpoonShootPoint.SetActive(true);
             //Shoot();
+            hookSprite.enabled = false;
             StartGrapple();
         }
 
         if (retracting)
         {
-            Vector2 grapplePos = Vector2.Lerp(Player.Instance.transform.position, target, moveToGrabbedPosSpeed * Time.deltaTime);
-            Player.Instance.transform.position = grapplePos;
+            Vector2 moveDirection = (target - (Vector2)Player.Instance.transform.position).normalized;
+            Player.Instance.rb.MovePosition(target);
+// = moveDirection * moveToGrabbedPosSpeed;
             line.SetPosition(0, transform.position);
 
-            if (Vector2.Distance(Player.Instance.transform.position, grapplePos) < 0.05f)
+            if (Vector2.Distance(Player.Instance.transform.position, target) < 0.05f)
             {
                 isGrappling = false;
                 retracting = false;
@@ -75,9 +93,12 @@ public class Shooting : MonoBehaviour
 
     private void Shoot()
     {
+        Vector3 instPos = new Vector3(harpoonShootPoint.transform.position.x, harpoonShootPoint.transform.position.y);
+
+
 
         // Instantiate harpoon at the fire point's position and rotation
-        GameObject harpoon = Instantiate(harpoonPrefab, harpoonShootPoint.transform.position, Quaternion.identity);
+        GameObject harpoon = Instantiate(harpoonPrefab, instPos, Quaternion.identity);
     }
 
     private void StartGrapple()
