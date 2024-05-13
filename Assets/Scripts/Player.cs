@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 
 
 
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
 
     private static Player instance;

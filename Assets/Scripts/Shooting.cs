@@ -8,7 +8,7 @@ public class Shooting : MonoBehaviour
 {
     private Vector3 mousePosition;
     LineRenderer line;
-    public float grappleSpeed = 10f;
+    public float moveToGrabbedPosSpeed;
     public float grappleShootSpeed = 20f;
     bool isGrappling = false;
     public bool retracting = false;
@@ -59,11 +59,11 @@ public class Shooting : MonoBehaviour
 
         if (retracting)
         {
-            Vector2 grapplePos = Vector2.Lerp(transform.position, target, grappleSpeed * Time.deltaTime);
-            transform.position = grapplePos;
+            Vector2 grapplePos = Vector2.Lerp(Player.Instance.transform.position, target, moveToGrabbedPosSpeed * Time.deltaTime);
+            Player.Instance.transform.position = grapplePos;
             line.SetPosition(0, transform.position);
 
-            if (Vector2.Distance(transform.position, grapplePos) < 0.05f)
+            if (Vector2.Distance(Player.Instance.transform.position, grapplePos) < 0.05f)
             {
                 isGrappling = false;
                 retracting = false;
