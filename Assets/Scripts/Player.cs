@@ -55,11 +55,6 @@ public class Player : MonoBehaviour
 
         moveDirection = new Vector2(horizontalInput, verticalInput) * moveSpeed;
 
-        // mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // Vector3 rotation = mousePosition - harpoonShootPoint.transform.position;
-        // float rotZ = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
-        // harpoonShootPoint.transform.rotation = Quaternion.Euler(0,0,rotZ);
-
         // Handle shooting
         if (Input.GetMouseButtonDown(0)) // Left mouse button
         {
@@ -72,19 +67,32 @@ public class Player : MonoBehaviour
         if (moveDirection.x < 0) // Moving left
         {
             gfx.transform.localScale = new Vector3(-1f, 1f, 1f); // Flip X localScale
+                                                                 // gfx.transform.rotation = Quaternion.Euler(0f, 0f, -transform.rotation.z);
+            // if (moveDirection.magnitude > 0) // Check if there is movement
+            // {
+            //     gfxAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            //     gfxAngle = Mathf.Clamp(gfxAngle, -60f, 60f); // Limit angle to ±60 degrees
+            //     gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
+            // }
+
         }
         else if (moveDirection.x > 0) // Moving right
         {
             gfx.transform.localScale = new Vector3(1f, 1f, 1f); // Reset X localScale
-
+                                                                // gfx.transform.rotation = Quaternion.Euler(0f, 0f, +1* transform.rotation.z);
+            // if (moveDirection.magnitude > 0) // Check if there is movement
+            // {
+            //     gfxAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            //     gfxAngle = Mathf.Clamp(gfxAngle, -60f, 60f); // Limit angle to ±60 degrees
+            //     gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
+            // }
         }
 
-    // // Rotate gfx towards moveDirection with limited angle
-    // if (moveDirection.magnitude > 0) // Check if there is movement
-    // {
-    //     float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-    //     angle = Mathf.Clamp(angle, -60f, 60f); // Limit angle to ±60 degrees
-    //     gfx.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-    // }
+            //         if (moveDirection.magnitude > 0) // Check if there is movement
+            // {
+            //     gfxAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            //     gfxAngle = Mathf.Clamp(gfxAngle, -60f, 60f); // Limit angle to ±60 degrees
+            //     gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
+            // }
     }
 }
