@@ -18,7 +18,7 @@ public class Shooting : MonoBehaviour
     private float maxDistance = 10f;
     private Camera mainCam;
     public GameObject projectile;
-    public Transform projectileTransform;
+    public Transform firePointTransform;
     public bool canFire;
     private float timer;
     public float timeBetweenFiring;
@@ -43,7 +43,14 @@ public class Shooting : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, rotZ);
 
 
-        if (Input.GetMouseButtonDown(0) && !isGrappling) // Left mouse button
+        if (Input.GetMouseButtonDown(0)) // Left mouse button
+        {
+            // harpoonShootPoint.SetActive(true);
+            Shoot();
+            //StartGrapple();
+        }
+
+                if (Input.GetMouseButtonDown(1) && !isGrappling) // Left mouse button
         {
             // harpoonShootPoint.SetActive(true);
             //Shoot();
@@ -52,7 +59,7 @@ public class Shooting : MonoBehaviour
 
         if (retracting)
         {
-            Vector2 grapplePos = Vector2.Lerp(Player.Instance.transform.position, target, grappleSpeed * Time.deltaTime);
+            Vector2 grapplePos = Vector2.Lerp(transform.position, target, grappleSpeed * Time.deltaTime);
             transform.position = grapplePos;
             line.SetPosition(0, transform.position);
 
@@ -77,7 +84,7 @@ public class Shooting : MonoBehaviour
     {
         Vector2 dir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, maxDistance, grappableMask);
+        RaycastHit2D hit = Physics2D.Raycast(firePointTransform.position, dir, maxDistance, grappableMask);
 
         if (hit.collider != null)
         {
@@ -95,14 +102,14 @@ public class Shooting : MonoBehaviour
     {
         float t = 0;
         float time = 10;
-        line.SetPosition(0, transform.position);
-        line.SetPosition(1, transform.position);
+        line.SetPosition(0, firePointTransform.position);
+        line.SetPosition(1, firePointTransform.position);
         Vector2 newPos;
 
         for (; t < time; t += grappleShootSpeed * Time.deltaTime)
         {
-            newPos = Vector2.Lerp(transform.position, target, t / time);
-            line.SetPosition(0, transform.position);
+            newPos = Vector2.Lerp(firePointTransform.position, target, t / time);
+            line.SetPosition(0, firePointTransform.position);
             line.SetPosition(1, newPos);
             yield return null;
         }

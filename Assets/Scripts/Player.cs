@@ -56,11 +56,11 @@ public class Player : MonoBehaviour
         moveDirection = new Vector2(horizontalInput, verticalInput) * moveSpeed;
 
         // Handle shooting
-        if (Input.GetMouseButtonDown(0)) // Left mouse button
-        {
-            // harpoonShootPoint.SetActive(true);
-            // ShootHarpoon();
-        }
+        // if (Input.GetMouseButtonDown(1)) // Left mouse button
+        // {
+        //     // harpoonShootPoint.SetActive(true);
+        //     // ShootHarpoon();
+        // }
 
 
         // Flip GameObject's X localScale based on movement direction
@@ -91,7 +91,7 @@ public class Player : MonoBehaviour
             //         if (moveDirection.magnitude > 0) // Check if there is movement
             // {
             //     gfxAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            //     gfxAngle = Mathf.Clamp(gfxAngle, -60f, 60f); // Limit angle to ±60 degrees
+            //     gfxAngle = Mathf.Clamp(gfxAngle, -90f, 90f); // Limit angle to ±60 degrees
             //     gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
             // }
     }

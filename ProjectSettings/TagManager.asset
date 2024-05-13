@@ -13,10 +13,10 @@ TagManager:
   - 
   - Water
   - UI
-  - PostProcessing
-  - Creature
+  - Blur Processing
+  - Sharp Processing
   - Grappable
-  - 
+  - Creature
   - 
   - 
   - 
@@ -45,4 +45,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2534764123
+    locked: 0
+  - name: Foreground
+    uniqueID: 2266739197
     locked: 0
