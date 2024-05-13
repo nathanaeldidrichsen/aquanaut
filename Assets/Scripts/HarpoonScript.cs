@@ -19,4 +19,9 @@ public class HarpoonScript : MonoBehaviour
         float rot = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, rot + 180);
     }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        Destroy(this.gameObject, 0.4f);
+    }
 }
