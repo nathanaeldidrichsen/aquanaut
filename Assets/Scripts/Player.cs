@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private Vector2 moveDirection;
     [SerializeField] GameObject gfx;
     private float gfxAngle;
+    public float rotationSpeed;
 
 
     public Rigidbody2D rb;
@@ -57,46 +58,68 @@ public class Player : MonoBehaviour
 
         moveDirection = new Vector2(horizontalInput, verticalInput) * moveSpeed;
 
-
-        // Handle shooting
-        // if (Input.GetMouseButtonDown(1)) // Left mouse button
+        // RotateGFX();
+        // if (moveDirection.magnitude > 0) // Check if there is movement
         // {
-        //     // harpoonShootPoint.SetActive(true);
-        //     // ShootHarpoon();
+            RotateGFX();
+            // RotateGfxTowardsMoveDirection();
         // }
+    }
 
-
+    void RotateGFX()
+    {
+        
         // Flip GameObject's X localScale based on movement direction
         if (moveDirection.x < 0) // Moving left
         {
-            gfx.transform.localScale = new Vector3(-1f, 1f, 1f); // Flip X localScale
-                                                                 // gfx.transform.rotation = Quaternion.Euler(0f, 0f, -transform.rotation.z);
-            // if (moveDirection.magnitude > 0) // Check if there is movement
-            // {
-            //     gfxAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            //     gfxAngle = Mathf.Clamp(gfxAngle, -60f, 60f); // Limit angle to ±60 degrees
-            //     gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
-            // }
+            Debug.Log("Left");
+            gfx.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            gfx.GetComponent<SpriteRenderer>().flipX = true;
+            
+            if(gfx.transform.rotation.z == 0)
+            {
+            gfxAngle = Mathf.Atan2(Mathf.Abs(moveDirection.y), Mathf.Abs(moveDirection.x) *2) * Mathf.Rad2Deg;
+            }
+            else
+            {
+            gfxAngle = Mathf.Atan2(Mathf.Abs(moveDirection.y), -Mathf.Abs(moveDirection.x) *2) * Mathf.Rad2Deg;
+            }
 
+            if(gfxAngle != 0 && moveDirection.y > 0)
+            {
+            gfxAngle = -gfxAngle;
+
+            }
+
+            gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
         }
         else if (moveDirection.x > 0) // Moving right
         {
-            gfx.transform.localScale = new Vector3(1f, 1f, 1f); // Reset X localScale
-                                                                // gfx.transform.rotation = Quaternion.Euler(0f, 0f, +1* transform.rotation.z);
-
-            // if (moveDirection.magnitude > 0) // Check if there is movement
-            // {
-            //     gfxAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            //     gfxAngle = Mathf.Clamp(gfxAngle, -60f, 60f); // Limit angle to ±60 degrees
-            //     gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
-            // }
+            Debug.Log("Right");
+            gfx.GetComponent<SpriteRenderer>().flipX = false;
+            // gfx.transform.localScale = new Vector3(1f, 1f, 1f); 
+            gfxAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
         }
+    }
 
-            //         if (moveDirection.magnitude > 0) // Check if there is movement
-            // {
-            //     gfxAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            //     gfxAngle = Mathf.Clamp(gfxAngle, -90f, 90f); // Limit angle to ±60 degrees
-            //     gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
-            // }
+        private void RotateGfxTowardsMoveDirection()
+    {
+        // Calculate the angle in degrees
+        float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+
+        // Determine if the character is moving left or right
+        bool movingLeft = moveDirection.x < 0;
+
+        if (movingLeft ) // Moving left
+        {
+            gfx.transform.localScale = new Vector3(-1f, 1f, 1f); // Flip X localScale
+            gfx.transform.rotation = Quaternion.Euler(0f, 0f, -gfxAngle); // Apply the opposite angle
+        }
+        else // Moving right
+        {
+            gfx.transform.localScale = new Vector3(1f, 1f, 1f); // Reset X localScale
+            gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle); // Apply the angle
+        }
     }
 }
