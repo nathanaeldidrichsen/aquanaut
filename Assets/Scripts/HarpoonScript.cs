@@ -6,6 +6,7 @@ public class HarpoonScript : MonoBehaviour
 {
     private Vector3 mousePos;
     private Rigidbody2D rb;
+    private int damage = 1;
     public float force;
     public float timeBeforeDestroy = 1f;
 
@@ -23,6 +24,13 @@ public class HarpoonScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
+
+        if(other.gameObject.CompareTag("Enemy"))
+        {
+            other.gameObject.GetComponent<Health>().GetHurt(damage);
+        }
+
         Destroy(this.gameObject, timeBeforeDestroy);
+
     }
 }

@@ -3,7 +3,8 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public int maxHealth = 100; // Maximum health
-    public int currentHealth; // Current health
+    public int currentHealth; // Current health¨
+    public bool isPlayer;
 
     private void Start()
     {
@@ -25,6 +26,10 @@ public class Health : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject); // Destroy the GameObject this script is attached to
+
+        if(isPlayer)
+        {
         HUD.Instance.LostGame();
+        }
     }
 }
