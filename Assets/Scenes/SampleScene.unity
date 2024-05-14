@@ -5492,7 +5492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6ab5fbdb02cbd4097f8b517a752287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveToGrabbedPosSpeed: 10
+  moveToGrabbedPosSpeed: 0.1
   grappleShootSpeed: 40
   retracting: 0
   grappableMask:
