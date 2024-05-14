@@ -57,13 +57,13 @@ public class HUD : MonoBehaviour
 
     void Update()
     {
-        if(healthSlider != null & Player.Instance.health.currentHealth > 0)
+        if(healthSlider != null & Player.Instance != null)
         {
             healthSlider.value = Player.Instance.health.currentHealth;
             healthSlider.maxValue = Player.Instance.health.maxHealth;
         }
 
-        if (oxygenSlider != null & Player.Instance.oxygen.currentOxygenLevel > 0)
+        if (oxygenSlider != null & Player.Instance != null)
         {
             oxygenSlider.value = Player.Instance.oxygen.currentOxygenLevel;
             oxygenSlider.maxValue = Player.Instance.oxygen.maxOxygenLevel;
