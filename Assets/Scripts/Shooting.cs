@@ -1,19 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 
 public class Shooting : MonoBehaviour
 {
     private Vector3 mousePosition;
-    LineRenderer line;
+    private LineRenderer line;
     public float moveToGrabbedPosSpeed = 10;
     public float grappleShootSpeed = 100f;
     bool isGrappling = false;
     public bool retracting = false;
-    Vector2 target;
+    private Vector2 target;
 
     [SerializeField] LayerMask grappableMask;
     private float maxDistance = 10f;
@@ -27,6 +26,9 @@ public class Shooting : MonoBehaviour
     public float harpoonSpeed = 10f; // Speed of the harpoon
     [SerializeField] GameObject harpoonShootPoint;
     public SpriteRenderer hookSprite;
+    public bool capturing;
+    private Creature hookedCreature;
+
 
     void Start()
     {
@@ -62,9 +64,14 @@ public class Shooting : MonoBehaviour
             StartGrapple();
         }
 
-        if (retracting)
+        if (retracting && !capturing)
         {
             MoveTowardsTarget();
+        }
+
+        if (capturing)
+        {
+            KeepTargetHooked();
         }
     }
 
@@ -74,6 +81,28 @@ public class Shooting : MonoBehaviour
         GameObject harpoon = Instantiate(harpoonPrefab, instPos, Quaternion.identity);
     }
 
+
+    public void UnhookCreature()
+    {
+        capturing = false;
+        hookedCreature = null;
+        isGrappling = false;
+        retracting = false;
+        line.enabled = false;
+        line.positionCount = 2;
+    }
+    public void KeepTargetHooked()
+    {
+        if (hookedCreature != null)
+        {
+            // Vector2 currentPosition = Player.Instance.transform.position;
+            // Vector2 direction = (target - currentPosition).normalized;
+            // Vector2 newPosition = currentPosition + direction * moveToGrabbedPosSpeed * Time.deltaTime;
+
+            line.SetPosition(0, Player.Instance.transform.position);
+            line.SetPosition(1, hookedCreature.transform.position);
+        }
+    }
     private void MoveTowardsTarget()
     {
         Vector2 currentPosition = Player.Instance.transform.position;
@@ -100,13 +129,27 @@ public class Shooting : MonoBehaviour
     {
         Vector2 dir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         RaycastHit2D hit = Physics2D.Raycast(firePointTransform.position, dir, maxDistance, grappableMask);
+
+
         if (hit.collider != null)
         {
+
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                Debug.Log("Grabbed creature");
+                if (hit.collider.GetComponent<Creature>().isCapturable)
+                {
+                    hookedCreature = hit.collider.GetComponent<Creature>();
+                    hookedCreature.StartCapture();
+                    hookedCreature.isHooked = true;
+                    capturing = true;
+                }
+            }
+
             isGrappling = true;
             target = hit.point;
             line.enabled = true;
             line.positionCount = 2;
-
             StartCoroutine(Grapple());
         }
     }
@@ -114,7 +157,7 @@ public class Shooting : MonoBehaviour
     IEnumerator Grapple()
     {
         float t = 0;
-        float time = 10;
+        float time = 10; // How fast the line attaches to the grab point
         line.SetPosition(0, firePointTransform.position);
         line.SetPosition(1, firePointTransform.position);
         Vector2 newPos;
@@ -126,6 +169,7 @@ public class Shooting : MonoBehaviour
             yield return null;
         }
         line.SetPosition(1, target);
+
         retracting = true;
     }
 }

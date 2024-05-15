@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Spikes : MonoBehaviour
 {
-    public int damage = 10; // Damage inflicted by the spikes
+    public int damage = 2; // Damage inflicted by the spikes
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -14,7 +14,7 @@ public class Spikes : MonoBehaviour
             {
 
                 Debug.Log("Player got hurt");
-                playerHealth.GetHurt(damage);
+                playerHealth.GetHurt(damage, transform.position);
             }
         }
     }

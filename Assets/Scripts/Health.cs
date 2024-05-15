@@ -5,28 +5,46 @@ public class Health : MonoBehaviour
     public int maxHealth = 100; // Maximum health
     public int currentHealth; // Current health¨
     public bool isPlayer;
+    public float knockBackForce = 30f;
+    private Rigidbody2D rb;
+    private RecoveryCounter recoveryCounter;
+    [SerializeField] private Creature creature;
+
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth; // Initialize current health to maximum health
+        recoveryCounter =  GetComponent<RecoveryCounter>();
     }
 
-    // Method to decrease health by a specified amount
-    public void GetHurt(int damageAmount)
+public void GetHurt(int damageAmount, Vector2 attackedFromPosition)
+{
+    if (!recoveryCounter.recovering)
     {
-        currentHealth -= damageAmount; // Decrease current health by damage amount
-
+        recoveryCounter.Recover();
+        Vector2 attackDirection = (transform.position - (Vector3)attackedFromPosition).normalized;
+        if(creature != null)
+        {
+            StartCoroutine(creature.ApplyKnockBack());
+        }
+        else
+        {
+            StartCoroutine(Player.Instance.ApplyKnockBack());
+        }
+        rb?.AddForce(attackDirection * knockBackForce, ForceMode2D.Impulse);
+        currentHealth -= damageAmount;
         if (currentHealth <= 0)
         {
-            Die(); // If health is zero or below, call the Die method
+            Die();
         }
     }
+}
 
-    // Method to destroy the object
+
     private void Die()
     {
-        Destroy(gameObject); // Destroy the GameObject this script is attached to
-
+        Destroy(gameObject);
         if(isPlayer)
         {
         HUD.Instance.LostGame();

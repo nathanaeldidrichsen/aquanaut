@@ -7,6 +7,7 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
 
+    private ProcessCollection process;
     // enum ItemType { InventoryItem, Coin, Health, Ammo }; //Creates an ItemType category
     // [SerializeField] ItemType itemType; //Allows us to select what type of item the gameObject is in the inspector
     // [SerializeField] private AudioSource audioSource;
@@ -15,70 +16,89 @@ public class Collectable : MonoBehaviour
     // [SerializeField] private int itemAmount;
     // [SerializeField] private string itemName; //If an inventory item, what is its name?
     // [SerializeField] private Sprite UIImage; //What image will be displayed if we collect an inventory item?
+    public int collectTime = 3;
 
-    // void Start()
-    // {
-    //     audioSource = GetComponent<AudioSource>();
-    // }
+    void Start()
+    {
+        process = GetComponent<ProcessCollection>();
+    }
 
-    // void OnTriggerEnter2D(Collider2D col)
-    // {
-    //     if (col.gameObject == NewPlayer.Instance.gameObject)
-    //     {
-    //         Collect();
-    //     }
+    void OnTriggerEnter2D(Collider2D col)
+    {
 
-    //     //Collect me if I trigger with an object tagged "Death Zone", aka an area the player can fall to certain death
-    //     if (col.gameObject.layer == 14)
-    //     {
-    //         Collect();
-    //     }
-    // }
+        if (col.gameObject.CompareTag("Player"))
+        {
+            process.StartTimer(collectTime);
 
-    // public void Collect()
-    // {
-    //     if (itemType == ItemType.InventoryItem)
-    //     {
-    //         if (itemName != "")
-    //         {
-    //             GameManager.Instance.GetInventoryItem(itemName, UIImage);
-    //         }
-    //     }
-    //     else if (itemType == ItemType.Coin)
-    //     {
-    //         NewPlayer.Instance.coins += itemAmount;
-    //     }
-    //     else if (itemType == ItemType.Health)
-    //     {
-    //         if (NewPlayer.Instance.health < NewPlayer.Instance.maxHealth)
-    //         {
-    //             GameManager.Instance.hud.HealthBarHurt();
-    //             NewPlayer.Instance.health += itemAmount;
-    //         }
-    //     }
-    //     else if (itemType == ItemType.Ammo)
-    //     {
-    //         if (NewPlayer.Instance.ammo < NewPlayer.Instance.maxAmmo)
-    //         {
-    //             GameManager.Instance.hud.HealthBarHurt();
-    //             NewPlayer.Instance.ammo += itemAmount;
-    //         }
-    //     }
+        }
+    }
 
-    //     GameManager.Instance.audioSource.PlayOneShot(collectSounds[Random.Range(0, collectSounds.Length)], Random.Range(.6f, 1f));
+    void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("Player"))
+        {
+            process.processing = true;
 
-    //     NewPlayer.Instance.FlashEffect();
+        }
+
+    }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("Player"))
+        {
+            process.StopTimer();
+
+        }
+
+    }
+
+    public void Collect()
+    {
+        Destroy(gameObject);
+
+        // if (itemType == ItemType.InventoryItem)
+        // {
+        //     if (itemName != "")
+        //     {
+        //         GameManager.Instance.GetInventoryItem(itemName, UIImage);
+        //     }
+        // }
+        // else if (itemType == ItemType.Coin)
+        // {
+        //     NewPlayer.Instance.coins += itemAmount;
+        // }
+        // else if (itemType == ItemType.Health)
+        // {
+        //     if (NewPlayer.Instance.health < NewPlayer.Instance.maxHealth)
+        //     {
+        //         GameManager.Instance.hud.HealthBarHurt();
+        //         NewPlayer.Instance.health += itemAmount;
+        //     }
+        // }
+        // else if (itemType == ItemType.Ammo)
+        // {
+        //     if (NewPlayer.Instance.ammo < NewPlayer.Instance.maxAmmo)
+        //     {
+        //         GameManager.Instance.hud.HealthBarHurt();
+        //         NewPlayer.Instance.ammo += itemAmount;
+        //     }
+        // }
+
+        // GameManager.Instance.audioSource.PlayOneShot(collectSounds[Random.Range(0, collectSounds.Length)], Random.Range(.6f, 1f));
+
+        // NewPlayer.Instance.FlashEffect();
 
 
-    //     //If my parent has an Ejector script, it means that my parent is actually what needs to be destroyed, along with me, once collected
-    //     if (transform.parent.GetComponent<Ejector>() != null)
-    //     {
-    //         Destroy(transform.parent.gameObject);
-    //     }
-    //     else
-    //     {
-    //         Destroy(gameObject);
-    //     }
+        // //If my parent has an Ejector script, it means that my parent is actually what needs to be destroyed, along with me, once collected
+        // if (transform.parent.GetComponent<Ejector>() != null)
+        // {
+        //     Destroy(transform.parent.gameObject);
+        // }
+        // else
+        // {
+        //     Destroy(gameObject);
+        // }
 
-    // }
+    }
 }

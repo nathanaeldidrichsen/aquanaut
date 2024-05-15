@@ -20,15 +20,20 @@ public class HUD : MonoBehaviour
     private bool isPaused = false;
 
 
-    public TextMeshProUGUI infoText;
+    public TextMeshProUGUI coinsText;
+    public int coinAmount;
+    private Animator anim;
+    public TextMeshProUGUI collectedCoinsText;
+
+
 
     public TextMeshProUGUI uiHealth;
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Slider oxygenSlider;
-    private Animator anim;
 
     [System.NonSerialized] public string loadSceneName;
     [System.NonSerialized] public bool resetPlayer;
+    public Animator playerStatusAnim;
     private bool inventoryIsOpen;
 
     private static HUD instance;
@@ -48,6 +53,7 @@ public class HUD : MonoBehaviour
 
     void Start()
     {
+        coinsText.text = coinAmount.ToString();
         Time.timeScale = 1;
         deadScreen.SetActive(false);
         //Set all bar widths to 1, and also the smooth variables.
@@ -57,6 +63,8 @@ public class HUD : MonoBehaviour
 
     void Update()
     {
+
+
         if(healthSlider != null & Player.Instance != null)
         {
             healthSlider.value = Player.Instance.health.currentHealth;
@@ -74,6 +82,14 @@ public class HUD : MonoBehaviour
         //healthBarWidth = (float)Player.Instance.health / (float)Player.Instance.maxHealth;
         // healthBarWidthEased += (healthBarWidth - healthBarWidthEased) * Time.deltaTime * healthBarWidthEased;
         // healthBar.transform.localScale = new Vector2(healthBarWidthEased, 1);
+    }
+
+    public void GetMoney(int amount)
+    {
+        coinAmount += amount;
+        coinsText.text = coinAmount.ToString();
+        collectedCoinsText.text = "$"+amount.ToString();
+        playerStatusAnim.SetTrigger("earn");
     }
 
     public void PlayCoverScreenAnimation()

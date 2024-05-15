@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HarpoonScript : MonoBehaviour
@@ -16,6 +14,10 @@ public class HarpoonScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 dir = mousePos - transform.position;
+
+
+
+
         Vector3 rotation = transform.position - mousePos;
         rb.velocity = new Vector2(dir.x, dir.y).normalized * force;
         float rot = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
@@ -27,7 +29,8 @@ public class HarpoonScript : MonoBehaviour
 
         if(other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<Health>().GetHurt(damage);
+            other.gameObject.GetComponent<Health>().GetHurt(damage, transform.position);
+            other.gameObject.GetComponent<Creature>().wasAttacked = true;
         }
 
         Destroy(this.gameObject, timeBeforeDestroy);

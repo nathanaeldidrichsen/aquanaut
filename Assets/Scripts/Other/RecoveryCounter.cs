@@ -16,14 +16,20 @@ public class RecoveryCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(counter <= recoveryTime)
+        if(counter < recoveryTime)
         {
             counter += Time.deltaTime;
             recovering = true;
         }
         else
         {
+            counter = recoveryTime;
             recovering = false;
         }
+    }
+
+    public void Recover()
+    {
+        counter = 0;
     }
 }
