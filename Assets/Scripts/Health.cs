@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -9,6 +10,8 @@ public class Health : MonoBehaviour
     private Rigidbody2D rb;
     private RecoveryCounter recoveryCounter;
     [SerializeField] private Creature creature;
+    [SerializeField] private GameObject healthSliderObject;
+
 
 
     private void Start()
@@ -26,6 +29,7 @@ public void GetHurt(int damageAmount, Vector2 attackedFromPosition)
         Vector2 attackDirection = (transform.position - (Vector3)attackedFromPosition).normalized;
         if(creature != null)
         {
+            StartCoroutine(ShowHealthAfterHit());
             StartCoroutine(creature.ApplyKnockBack());
         }
         else
@@ -50,4 +54,15 @@ public void GetHurt(int damageAmount, Vector2 attackedFromPosition)
         HUD.Instance.LostGame();
         }
     }
+
+    public IEnumerator ShowHealthAfterHit()
+    {
+            if(healthSliderObject != null)
+            {
+            healthSliderObject.SetActive(true);
+            yield return new WaitForSeconds(5);
+            healthSliderObject.SetActive(false);
+            }
+    }
+
 }

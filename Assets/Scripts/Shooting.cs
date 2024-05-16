@@ -29,11 +29,19 @@ public class Shooting : MonoBehaviour
     public bool capturing;
     private Creature hookedCreature;
 
+    public float shootRecoveryTime = 1;
+    [System.NonSerialized] public float counter;
+    [System.NonSerialized] public bool shootRecovering = false;
+    private Oxygen oxy;
+
+
+
 
     void Start()
     {
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         line = GetComponent<LineRenderer>();
+        oxy = GetComponentInParent<Oxygen>();
     }
 
     void Update()
@@ -73,12 +81,33 @@ public class Shooting : MonoBehaviour
         {
             KeepTargetHooked();
         }
+
+        if (counter < shootRecoveryTime)
+        {
+            counter += Time.deltaTime;
+            shootRecovering = true;
+        }
+        else
+        {
+            counter = shootRecoveryTime;
+            shootRecovering = false;
+        }
+    }
+
+    public void RecoverShoot()
+    {
+        counter = 0;
     }
 
     private void Shoot()
     {
+        if(!shootRecovering)
+        {
+        RecoverShoot();
+        oxy.currentOxygenLevel -= 5;
         Vector3 instPos = new Vector3(harpoonShootPoint.transform.position.x, harpoonShootPoint.transform.position.y);
         GameObject harpoon = Instantiate(harpoonPrefab, instPos, Quaternion.identity);
+        }
     }
 
 

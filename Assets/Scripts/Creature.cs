@@ -60,9 +60,9 @@ public class Creature : MonoBehaviour
             }
         }
 
-        if(!isKnockedBack)
+        if (!isKnockedBack)
         {
-        moveDirection = new Vector2(rb.velocity.x, rb.velocity.y) * speed;
+            moveDirection = new Vector2(rb.velocity.x, rb.velocity.y) * speed;
         }
 
         RotateGFX();

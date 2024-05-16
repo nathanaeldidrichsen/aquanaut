@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     public Oxygen oxygen;
     [SerializeField] public GameObject gfx;
     private bool isKnockedBack;
+    private float normalOxygenDepletionRate;
 
 
     public Rigidbody2D rb;
@@ -44,6 +45,8 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         health = GetComponent<Health>();
         oxygen = GetComponentInChildren<Oxygen>();
+        normalOxygenDepletionRate = oxygen.oxygenDepletionRate;
+        
     }
 
     void FixedUpdate()
@@ -65,7 +68,13 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             moveSpeed = boostedMoveSpeed; // If Shift is held down, use boosted move speed
+            oxygen.oxygenDepletionRate = (int)normalOxygenDepletionRate * 2;
         }
+        else
+        {
+            oxygen.oxygenDepletionRate = (int)normalOxygenDepletionRate;
+        }
+
 
         moveDirection = new Vector2(horizontalInput, verticalInput) * moveSpeed;
 
@@ -126,7 +135,7 @@ public class Player : MonoBehaviour
         public IEnumerator ApplyKnockBack()
     {
         isKnockedBack = true;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         isKnockedBack = false;
 
     }

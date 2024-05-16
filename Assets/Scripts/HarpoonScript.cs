@@ -7,6 +7,7 @@ public class HarpoonScript : MonoBehaviour
     private int damage = 1;
     public float force;
     public float timeBeforeDestroy = 1f;
+    private bool hasHit;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +28,9 @@ public class HarpoonScript : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
 
-        if(other.gameObject.CompareTag("Enemy"))
+        if(other.gameObject.CompareTag("Enemy") && !hasHit)
         {
+            hasHit = true;
             other.gameObject.GetComponent<Health>().GetHurt(damage, transform.position);
             other.gameObject.GetComponent<Creature>().wasAttacked = true;
         }
