@@ -35,6 +35,11 @@ public class HarpoonScript : MonoBehaviour
             other.gameObject.GetComponent<Creature>().wasAttacked = true;
         }
 
+        if (other.gameObject.CompareTag("Breakable"))
+        {
+            Destroy(other.gameObject);
+        }
+
         Destroy(this.gameObject, timeBeforeDestroy);
 
     }

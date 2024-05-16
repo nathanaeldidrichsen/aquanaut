@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Grappable
   - Enemy
+  - Creature
+  - Breakable
   layers:
   - Default
   - TransparentFX
