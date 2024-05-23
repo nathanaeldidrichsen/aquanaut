@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Piranha
+  m_Controller: {fileID: 9100000, guid: a760afcf6ab2733478440ff9af3eaeaf, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: e4ec56708edef86498e07c972f15ea10, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d082fdb71cf5a2942b35ca25cca760c3, type: 2}

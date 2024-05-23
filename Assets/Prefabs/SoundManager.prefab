@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5326639673540465655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5326639673540465654}
+  - component: {fileID: 5326639673540465657}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5326639673540465654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5326639673540465655}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5326639673540465657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5326639673540465655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12ecf7313f424a94f868c33976d7b0bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hurtSound: {fileID: 0}
+  gemSound: {fileID: 0}
+  breakSound: {fileID: 8300000, guid: 54f3a87b58e2a0644bbf773316e80883, type: 3}
+  shootSound: {fileID: 8300000, guid: 695588516b2339a41bbf51001356c2e6, type: 3}
+  collectSound: {fileID: 0}
+  rockSound: {fileID: 8300000, guid: 54f3a87b58e2a0644bbf773316e80883, type: 3}
+  biteSound: {fileID: 8300000, guid: d5fdad13007cae148afa8a46bc143d5b, type: 3}
+  enemyHitSound: {fileID: 8300000, guid: 4917fbbe8b2b1be47a8826e61fe6725e, type: 3}
+  stepSound: {fileID: 0}
+  flaskSound: {fileID: 0}
+  levelUpSound: {fileID: 0}
+  npcSound: {fileID: 0}
+  gameMusic: {fileID: 0}
+  maxSimultaneousSounds: 3

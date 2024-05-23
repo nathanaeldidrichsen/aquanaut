@@ -104,7 +104,8 @@ public class Shooting : MonoBehaviour
         if(!shootRecovering)
         {
         RecoverShoot();
-        oxy.currentOxygenLevel -= 5;
+        //oxy.currentOxygenLevel -= 5;
+        SoundManager.Instance.PlaySound(SoundManager.Instance.shootSound, 0.8f);
         Vector3 instPos = new Vector3(harpoonShootPoint.transform.position.x, harpoonShootPoint.transform.position.y);
         GameObject harpoon = Instantiate(harpoonPrefab, instPos, Quaternion.identity);
         }

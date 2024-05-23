@@ -11,6 +11,9 @@ public class Health : MonoBehaviour
     private RecoveryCounter recoveryCounter;
     [SerializeField] private Creature creature;
     [SerializeField] private GameObject healthSliderObject;
+    public int deadCoinAmount = 10;
+
+    
 
 
 
@@ -23,17 +26,32 @@ public class Health : MonoBehaviour
 
 public void GetHurt(int damageAmount, Vector2 attackedFromPosition)
 {
+
+    if(this.gameObject.CompareTag("Nest"))
+    {
+        currentHealth -= damageAmount;
+        if (currentHealth <= 0)
+        {
+            Die();
+        } 
+    }
+
     if (!recoveryCounter.recovering)
     {
         recoveryCounter.Recover();
         Vector2 attackDirection = (transform.position - (Vector3)attackedFromPosition).normalized;
         if(creature != null)
         {
+        SoundManager.Instance.PlaySound(SoundManager.Instance.enemyHitSound, 0.5f);
+            creature.wasAttacked = true;
             StartCoroutine(ShowHealthAfterHit());
             StartCoroutine(creature.ApplyKnockBack());
         }
-        else
+        
+        if(isPlayer)
         {
+        SoundManager.Instance.PlaySound(SoundManager.Instance.biteSound, 0.5f);
+            
             StartCoroutine(Player.Instance.ApplyKnockBack());
         }
         rb?.AddForce(attackDirection * knockBackForce, ForceMode2D.Impulse);
@@ -45,14 +63,17 @@ public void GetHurt(int damageAmount, Vector2 attackedFromPosition)
     }
 }
 
-
     private void Die()
     {
-        Destroy(gameObject);
-        if(isPlayer)
+
+        if (isPlayer)
         {
-        HUD.Instance.LostGame();
+            HUD.Instance.LostGame();
         }
+
+
+        HUD.Instance.GetMoney(deadCoinAmount);
+        Destroy(gameObject);
     }
 
     public IEnumerator ShowHealthAfterHit()

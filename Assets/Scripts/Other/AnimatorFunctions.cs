@@ -42,6 +42,11 @@ public class AnimatorFunctions : MonoBehaviour
     //     audioSource.PlayOneShot(whichSound);
     // }
 
+    public void PlayRockSmash()
+    {
+        SoundManager.Instance.PlaySound(SoundManager.Instance.rockSound, 0.1f, 0.2f);
+    }
+
     // public void EmitParticles(int amount)
     // {
     //     particleSystem.Emit(amount);
@@ -74,7 +79,7 @@ public class AnimatorFunctions : MonoBehaviour
 
     public void LoadScene(string whichLevel)
     {
-        SceneManager.LoadScene(whichLevel);
+        // SceneManager.LoadScene(whichLevel);
     }
 
     //Slow down or speed up the game's time scale!

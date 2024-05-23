@@ -6,7 +6,7 @@ public class HarpoonScript : MonoBehaviour
     private Rigidbody2D rb;
     private int damage = 1;
     public float force;
-    public float timeBeforeDestroy = 1f;
+    public float timeBeforeDestroy = 0.1f;
     private bool hasHit;
 
     // Start is called before the first frame update
@@ -28,69 +28,83 @@ public class HarpoonScript : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
 
-        if(other.gameObject.CompareTag("Enemy") && !hasHit)
+        if (other.gameObject.CompareTag("Enemy") && !hasHit)
         {
             hasHit = true;
             other.gameObject.GetComponent<Health>().GetHurt(damage, transform.position);
-            other.gameObject.GetComponent<Creature>().wasAttacked = true;
+            Destroy(this.gameObject, timeBeforeDestroy);
+
+            // other.gameObject.GetComponent<Creature>().wasAttacked = true;
         }
+        if (other.gameObject.CompareTag("Nest") && !hasHit)
+        {
+            hasHit = true;
+            other.gameObject.GetComponent<Health>().GetHurt(damage, transform.position);
+            Destroy(this.gameObject, timeBeforeDestroy);
+
+        }
+
 
         if (other.gameObject.CompareTag("Breakable"))
         {
+            SoundManager.Instance.PlaySound(SoundManager.Instance.rockSound, 0.1f);
+
             Destroy(other.gameObject);
+            Destroy(this.gameObject, timeBeforeDestroy);
+
         }
 
-        Destroy(this.gameObject, timeBeforeDestroy);
+        Destroy(this.gameObject, 2);
 
     }
 
-//THIS SCRIPT WILL CHANGE VELOCITY BASED ON HOW FAR FROM THE PLAYER U CLICK
+    //THIS SCRIPT WILL CHANGE VELOCITY BASED ON HOW FAR FROM THE PLAYER U CLICK
 
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
+    // using System.Collections;
+    // using System.Collections.Generic;
+    // using UnityEngine;
 
-// public class HarpoonScript : MonoBehaviour
-// {
-//     private Vector3 mousePos;
-//     private Rigidbody2D rb;
-//     private int damage = 1;
-//     public float force;
-//     public float timeBeforeDestroy = 1f;
-//     private Vector2 moveDir;
+    // public class HarpoonScript : MonoBehaviour
+    // {
+    //     private Vector3 mousePos;
+    //     private Rigidbody2D rb;
+    //     private int damage = 1;
+    //     public float force;
+    //     public float timeBeforeDestroy = 1f;
+    //     private Vector2 moveDir;
 
-//     private float initialAngle;
-//     // Start is called before the first frame update
-//     void Start()
-//     {
-//         rb = GetComponent<Rigidbody2D>();
-//         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-//         Vector3 dir = mousePos - transform.position;
-//         rb.velocity = dir.normalized * force;
+    //     private float initialAngle;
+    //     // Start is called before the first frame update
+    //     void Start()
+    //     {
+    //         rb = GetComponent<Rigidbody2D>();
+    //         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //         Vector3 dir = mousePos - transform.position;
+    //         rb.velocity = dir.normalized * force;
 
-//         // Initial rotation
-//         float initialAngle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
-//         transform.rotation = Quaternion.Euler(0, 0, initialAngle);
-//     }
+    //         // Initial rotation
+    //         float initialAngle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
+    //         transform.rotation = Quaternion.Euler(0, 0, initialAngle);
+    //     }
 
-//     void Update()
-//     {
-//         // moveDir = rb.velocity;
-//         // Quaternion toRotation = Quaternion.LookRotation(Vector3.up, moveDir.normalized);
-//         // transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 4000 * Time.deltaTime);
-//     }
+    //     void Update()
+    //     {
+    //         // moveDir = rb.velocity;
+    //         // Quaternion toRotation = Quaternion.LookRotation(Vector3.up, moveDir.normalized);
+    //         // transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 4000 * Time.deltaTime);
+    //     }
 
-//     void OnCollisionEnter2D(Collision2D other)
-//     {
+    //     void OnCollisionEnter2D(Collision2D other)
+    //     {
 
-//         if (other.gameObject.CompareTag("Enemy"))
-//         {
-//             other.gameObject.GetComponent<Health>().GetHurt(damage);
-//         }
+    //         if (other.gameObject.CompareTag("Enemy"))
+    //         {
+    //             other.gameObject.GetComponent<Health>().GetHurt(damage);
+    //         }
 
-//         Destroy(this.gameObject, timeBeforeDestroy);
+    //         Destroy(this.gameObject, timeBeforeDestroy);
 
-//     }
-// }
+    //     }
+    // }
 
 }

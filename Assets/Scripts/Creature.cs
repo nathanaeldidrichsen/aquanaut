@@ -10,6 +10,9 @@ public class Creature : MonoBehaviour
     private Rigidbody2D rb;
     private ProcessCollection process;
     public float speed = 5f;
+    public float randSpeedMin;
+    public float randSpeedMax;
+
     public int damage = 3;
     public bool isHooked = false;
     private Health health;
@@ -23,13 +26,24 @@ public class Creature : MonoBehaviour
     private bool isKnockedBack;
     [SerializeField] private float rbVelocityX;
     public int facingDir = 1; //1 = facing right -1 facing left
+    private Transform playerTransform; // To store the player's position
+    public bool isPiranha;
 
 
     void Start()
     {
+        speed = Random.Range(randSpeedMin, randSpeedMax);
+
         health = GetComponent<Health>();
         rb = GetComponent<Rigidbody2D>();
         process = GetComponent<ProcessCollection>();
+
+        // Find the player GameObject by tag and store its transform
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerTransform = player.transform;
+        }
     }
 
     // Update is called once per frame
@@ -38,7 +52,7 @@ public class Creature : MonoBehaviour
         rbVelocityX = rb.velocity.x * speed;
 
         // UpdateSpeedBasedOnHealth();
-        if (isHooked || wasAttacked)
+        if (isHooked || wasAttacked && !isPiranha)
         {
             Vector2 directionToPlayer = Player.Instance.transform.position - transform.position;
             directionToPlayer.Normalize(); // Ensure the direction vector is of length 1
@@ -60,10 +74,23 @@ public class Creature : MonoBehaviour
             }
         }
 
-        if (!isKnockedBack)
+
+        if (isPiranha)
         {
-            moveDirection = new Vector2(rb.velocity.x, rb.velocity.y) * speed;
+            if (playerTransform != null && !isKnockedBack)
+            {
+                // Calculate the direction vector from the enemy to the player
+                moveDirection = (playerTransform.position - transform.position).normalized;
+                rb.MovePosition(rb.position + moveDirection * speed * Time.fixedDeltaTime);
+            }
+
+
         }
+
+        // if (!isKnockedBack)
+        // {
+        //     moveDirection = new Vector2(rb.velocity.x, rb.velocity.y) * speed;
+        // }
 
         RotateGFX();
 
@@ -77,27 +104,6 @@ public class Creature : MonoBehaviour
             gfx.GetComponent<SpriteRenderer>().flipX = false;
         }
     }
-
-    private void UpdateSpeedBasedOnHealth()
-    {
-        currentSpeed = speed * (health.currentHealth / health.maxHealth);
-        // rb.velocity = rb.velocity.normalized * currentSpeed; // Apply the new speed
-    }
-
-    public void StartCapture()
-    {
-        if (isCapturable)
-        {
-            process.StartTimer(captureTime);
-        }
-    }
-
-    public void Captured()
-    {
-        Player.Instance.GetComponentInChildren<Shooting>().UnhookCreature();
-        Destroy(gameObject);
-    }
-
     void RotateGFX()
     {
         // Flip GameObject's X localScale based on movement direction
@@ -131,7 +137,7 @@ public class Creature : MonoBehaviour
         gfx.transform.rotation = Quaternion.Euler(0f, 0f, gfxAngle);
     }
 
-    void OnCollisionStay2D(Collision2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
 
         if (other.gameObject.CompareTag("Player"))
@@ -145,5 +151,18 @@ public class Creature : MonoBehaviour
         isKnockedBack = true;
         yield return new WaitForSeconds(0.2f);
         isKnockedBack = false;
+    }
+    public void StartCapture()
+    {
+        if (isCapturable)
+        {
+            process.StartTimer(captureTime);
+        }
+    }
+
+    public void Captured()
+    {
+        Player.Instance.GetComponentInChildren<Shooting>().UnhookCreature();
+        Destroy(gameObject);
     }
 }
